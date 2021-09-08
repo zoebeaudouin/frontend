@@ -1,3 +1,4 @@
+import {Layout} from '@components/Layout'
 import {
   ProductCard,
   ProductCardType,
@@ -6,7 +7,6 @@ import {
 import {ProductGrid} from '@components/Product/ProductGrid'
 import {client, ssrCache} from '@lib/urqlClient'
 import type {GetStaticProps, NextPage} from 'next'
-import {NextSeo} from 'next-seo'
 import {gql, useQuery} from 'urql'
 
 const PRODUCTS_QUERY = gql`
@@ -27,17 +27,13 @@ const Index: NextPage = () => {
   }
   const products: ProductCardType[] = data.products
   return (
-    <>
-      <NextSeo
-        title="Zoé Beaudouin"
-        description="A short description goes here."
-      />
+    <Layout>
       <ProductGrid>
         {products.map((product) => (
           <ProductCard key={product.slug.current} product={product} />
         ))}
       </ProductGrid>
-    </>
+    </Layout>
   )
 }
 
@@ -50,7 +46,7 @@ export const getStaticProps: GetStaticProps = async () => {
       // urqlState is a keyword here so withUrqlClient can pick it up.
       urqlState: ssrCache.extractData(),
     },
-    revalidate: 60,
+    revalidate: 600,
   }
 }
 

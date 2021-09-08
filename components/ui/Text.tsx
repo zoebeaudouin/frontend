@@ -6,7 +6,7 @@ export const Text = styled(Container, {
     size: {
       base: tw`text-base`,
       sm: tw`text-2xl`,
-      md: tw`text-4xl`,
+      md: tw`text-3xl`,
       lg: tw`text-6xl`,
     },
   },

@@ -5,7 +5,7 @@ export const stitches = createStitches({
   prefix: '',
   theme: {
     fonts: {
-      poppins: 'Poppins',
+      urbanist: 'Urbanist',
       mono: 'Roboto Mono, menlo, monospace',
     },
   },

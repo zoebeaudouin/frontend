@@ -29,7 +29,7 @@ export default class Document extends NextDocument {
               crossOrigin="true"
             />
             <link
-              href={`https://fonts.googleapis.com/css2?family=Poppins:wght@300&family=Roboto+Mono:wght@100;400&display=swap`}
+              href={`https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600&family=Roboto+Mono:wght@100;400&display=swap`}
               rel="stylesheet"
             />
           </>

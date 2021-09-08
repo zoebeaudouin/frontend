@@ -1,16 +1,29 @@
-import {FC} from 'react'
-import {gql} from 'urql'
-import {Title, Text} from '@components/ui'
-import Link from 'next/link'
-import Image from 'next/image'
-import {styled} from 'twin.macro'
 import {
   ProductCardType,
   PRODUCT_CARD_FRAGMENT,
 } from '@components/Product/ProductCard'
+import {
+  Title,
+  Text,
+  PortableText,
+  Container,
+  Button,
+  Tag,
+  Divider,
+} from '@components/ui'
+import Image from 'next/image'
+import Link from 'next/link'
+import {FC} from 'react'
+import tw, {styled} from 'twin.macro'
+import {gql} from 'urql'
+import Price from './ProductViewPrice'
+import {isProductInStock} from '@lib/product'
+import * as Accordion from '@components/ui'
 
 export type ProductViewType = ProductCardType & {
   blurb: string
+  descriptionRaw: string
+  tags: string[]
 }
 
 interface Props {
@@ -21,35 +34,81 @@ export const PRODUCT_VIEW_FRAGMENT = gql`
   fragment ProductViewFragment on Product {
     ...ProductCardFragment
     blurb
+    descriptionRaw
+    tags
   }
   ${PRODUCT_CARD_FRAGMENT}
 `
 
-const ProductViewContainer = styled.a({
-  display: 'block',
-  flexDirection: 'column',
-  backgroundColor: 'black',
-  color: 'white',
+const ProductViewContainer = styled.div({
+  ...tw`grid grid-cols-1 md:grid-cols-2`,
 })
 
-export const ProductView: FC<Props> = ({product}) => (
-  <Link href={`/shop/${product.slug.current}`} passHref>
+const ProductViewImageContainer = styled.div({})
+
+const ProductViewDetails = styled.div({
+  ...tw`md:px-6 py-3`,
+})
+
+export const ProductView: FC<Props> = ({product}) => {
+  const {
+    title,
+    //slug: {current: slug},
+    defaultProductVariant: {price, stock},
+    images,
+    blurb,
+    descriptionRaw,
+    tags,
+  } = product
+  const inStock = isProductInStock(stock)
+  return (
     <ProductViewContainer>
-      {product?.images && (
-        <Image
-          src={product.images[0]?.asset.url}
-          alt={product.title || 'Product Image'}
-          width={1000}
-          height={1000}
-          layout="responsive"
-        />
-      )}
-      <Title as="h2" size="sm" px={3} pt={3}>
-        {product.title}
-      </Title>
-      <Text px={3} pb={3}>
-        {product.defaultProductVariant.price}€
-      </Text>
+      <ProductViewImageContainer>
+        {images && (
+          <Image
+            src={images[0]?.asset.url}
+            alt={title || 'Product Image'}
+            width={1000}
+            height={1000}
+            layout="responsive"
+          />
+        )}
+      </ProductViewImageContainer>
+      <ProductViewDetails>
+        <Title as="h1" size="lg" mb={3}>
+          {title}
+        </Title>
+        <Text mb={3} size="md">
+          {blurb}
+        </Text>
+        <Text mb={3}>
+          {inStock ? (
+            <Price price={price} />
+          ) : (
+            <span css={{fontWeight: 'bold'}}>Out of stock</span>
+          )}
+        </Text>
+        <Text mb={4}>
+          <PortableText content={descriptionRaw} />
+        </Text>
+        <Container mb={8}>
+          {inStock && (
+            <Button primary mr={3}>
+              Add to cart
+            </Button>
+          )}
+        </Container>
+        <Divider />
+
+        <Text mt={8}>
+          Tags:{' '}
+          {tags.map((tag) => (
+            <Link key={tag} href={`/product/tags/${tag}`} passHref>
+              <Tag as="a">{tag}</Tag>
+            </Link>
+          ))}
+        </Text>
+      </ProductViewDetails>
     </ProductViewContainer>
-  </Link>
-)
+  )
+}

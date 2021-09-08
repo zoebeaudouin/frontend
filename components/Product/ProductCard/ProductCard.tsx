@@ -5,6 +5,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 import {styled} from 'twin.macro'
 import type {Slug} from '@types'
+import {isProductInStock} from '@lib/product'
+import {formatPrice} from '@lib/product'
 
 type Image = {
   url: string
@@ -14,6 +16,7 @@ type Asset = {
 }
 type DefaultProductVariant = {
   price: number
+  stock?: number
 }
 
 export type ProductCardType = {
@@ -41,35 +44,45 @@ export const PRODUCT_CARD_FRAGMENT = gql`
     }
     defaultProductVariant {
       price
+      stock
     }
   }
 `
 
 const ProductCardContainer = styled.a({
-  display: 'block',
+  display: 'flex',
   flexDirection: 'column',
   backgroundColor: 'black',
   color: 'white',
 })
 
-export const ProductCard: FC<Props> = ({product}) => (
-  <Link href={`/shop/${product.slug.current}`} passHref>
-    <ProductCardContainer>
-      {product?.images && (
-        <Image
-          src={product.images[0]?.asset.url}
-          alt={product.title || 'Product Image'}
-          width={500}
-          height={500}
-          layout="responsive"
-        />
-      )}
-      <Title as="h2" size="sm" px={3} pt={3}>
-        {product.title}
-      </Title>
-      <Text px={3} pb={3}>
-        {product.defaultProductVariant.price}€
-      </Text>
-    </ProductCardContainer>
-  </Link>
-)
+export const ProductCard: FC<Props> = ({product}) => {
+  const {
+    title,
+    slug: {current: slug},
+    defaultProductVariant: {price, stock},
+    images,
+  } = product
+  const inStock = isProductInStock(stock)
+  return (
+    <Link href={`/shop/${slug}`} passHref>
+      <ProductCardContainer>
+        {images && (
+          <Image
+            src={images[0]?.asset.url}
+            alt={title || 'Product Image'}
+            width={500}
+            height={500}
+            layout="responsive"
+          />
+        )}
+        <Title as="h2" size="sm" px={3} pt={3}>
+          {title}
+        </Title>
+        <Text px={3} pb={3}>
+          {inStock ? `${formatPrice(price)}` : 'Out of stock'}
+        </Text>
+      </ProductCardContainer>
+    </Link>
+  )
+}

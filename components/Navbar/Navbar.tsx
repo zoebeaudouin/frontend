@@ -8,7 +8,7 @@ const NavbarContainer = styled.div({
   a: {
     ...tw`transition-all duration-200`,
     '&:hover': {
-      ...tw`text-gray-200`,
+      ...tw`text-gray-300`,
     },
   },
 })

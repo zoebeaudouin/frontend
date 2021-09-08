@@ -2,10 +2,14 @@ import {FC} from 'react'
 import {Title} from '@components/ui'
 import Link from 'next/link'
 
-export const Logo: FC = () => (
+interface Props {
+  as: string
+}
+
+export const Logo: FC<Props> = ({as}) => (
   <Link href={'/'}>
     <a>
-      <Title as="h1" mb={2}>
+      <Title mb={2} as={as}>
         Zoé Beaudouin
       </Title>
     </a>

@@ -43,6 +43,16 @@ export const Container = styled.div({
       5: tw`pb-5`,
       6: tw`pb-6`,
     },
+    mt: {
+      1: tw`mt-1`,
+      2: tw`mt-2`,
+      3: tw`mt-3`,
+      4: tw`mt-4`,
+      5: tw`mt-5`,
+      6: tw`mt-6`,
+      7: tw`mt-7`,
+      8: tw`mt-8`,
+    },
     mb: {
       1: tw`mb-1`,
       2: tw`mb-2`,
@@ -50,6 +60,8 @@ export const Container = styled.div({
       4: tw`mb-4`,
       5: tw`mb-5`,
       6: tw`mb-6`,
+      7: tw`mb-7`,
+      8: tw`mb-8`,
     },
   },
 })

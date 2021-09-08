@@ -1,3 +1,4 @@
+import {Layout} from '@components/Layout'
 import {
   ProductView,
   ProductViewType,
@@ -11,7 +12,6 @@ import type {
   InferGetStaticPropsType,
   NextPage,
 } from 'next'
-import {NextSeo} from 'next-seo'
 import {gql, useQuery} from 'urql'
 
 const PRODUCT_QUERY = gql`
@@ -48,10 +48,9 @@ const Product: NextPage = ({
   }
   const product: ProductViewType = data.product?.[0]
   return (
-    <>
-      <NextSeo title={product.title} description={product.blurb} />
+    <Layout title={product.title} description={product.blurb}>
       <ProductView key={product.slug.current} product={product} />
-    </>
+    </Layout>
   )
 }
 
@@ -67,7 +66,7 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
       slug,
       urqlState: ssrCache.extractData(),
     },
-    revalidate: 60,
+    revalidate: 600,
   }
 }
 
