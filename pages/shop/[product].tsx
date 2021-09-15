@@ -57,8 +57,8 @@ const Product: NextPage = ({
 export const getStaticProps: GetStaticProps = async ({params}) => {
   // This query is used to populate the cache for the query
   // used on this page.
-  if (params?.slug === undefined) return <div>Error</div>
-  const slug: Slug = {current: params.slug as string}
+  if (params?.product === undefined) return <div>Error</div>
+  const slug: Slug = {current: params.product as string}
   await client?.query(PRODUCT_QUERY, {slug: slug.current}).toPromise()
 
   return {
@@ -79,7 +79,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
         return {
           params: {
             id: id,
-            slug: slug.current,
+            product: slug.current,
           },
         }
       })

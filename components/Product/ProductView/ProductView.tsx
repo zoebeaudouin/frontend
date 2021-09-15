@@ -3,22 +3,21 @@ import {
   PRODUCT_CARD_FRAGMENT,
 } from '@components/Product/ProductCard'
 import {
-  Title,
-  Text,
-  PortableText,
-  Container,
   Button,
-  Tag,
+  Container,
   Divider,
+  PortableText,
+  Tag,
+  Text,
+  Title,
 } from '@components/ui'
+import {isProductInStock} from '@lib/product'
 import Image from 'next/image'
 import Link from 'next/link'
 import {FC} from 'react'
 import tw, {styled} from 'twin.macro'
 import {gql} from 'urql'
 import Price from './ProductViewPrice'
-import {isProductInStock} from '@lib/product'
-import * as Accordion from '@components/ui'
 
 export type ProductViewType = ProductCardType & {
   blurb: string
@@ -103,7 +102,7 @@ export const ProductView: FC<Props> = ({product}) => {
         <Text mt={8}>
           Tags:{' '}
           {tags.map((tag) => (
-            <Link key={tag} href={`/product/tags/${tag}`} passHref>
+            <Link key={tag} href={`/shop/tag/${tag}`} passHref>
               <Tag as="a">{tag}</Tag>
             </Link>
           ))}

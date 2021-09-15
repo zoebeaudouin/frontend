@@ -54,6 +54,12 @@ const ProductCardContainer = styled.a({
   flexDirection: 'column',
   backgroundColor: 'black',
   color: 'white',
+  img: {
+    filter: 'grayscale(0%)',
+    '&:hover': {
+      filter: 'grayscale(20%)',
+    },
+  },
 })
 
 export const ProductCard: FC<Props> = ({product}) => {
