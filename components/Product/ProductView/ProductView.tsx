@@ -72,12 +72,13 @@ export const ProductView: FC<Props> = ({product}) => {
   } = product
 
   const inStock = isProductInStock(stock)
+  const imageUrl = images[0]?.asset.url
   return (
     <ProductViewContainer>
       <ProductViewImageContainer>
         {images && (
           <Image
-            src={images[0]?.asset.url}
+            src={imageUrl}
             alt={title || 'Product Image'}
             width={1000}
             height={1000}
@@ -108,7 +109,9 @@ export const ProductView: FC<Props> = ({product}) => {
               id={id}
               price={price}
               url={getProductUrl(slug)}
+              description={blurb}
               name={title}
+              imageUrl={imageUrl}
             />
           )}
         </Container>

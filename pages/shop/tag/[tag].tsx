@@ -14,6 +14,7 @@ import type {
   NextPage,
 } from 'next'
 import {gql, useQuery} from 'urql'
+import {NextSeo} from 'next-seo'
 
 const PRODUCTS_BY_TAG_QUERY = gql`
   query AllProductsQuery {
@@ -43,11 +44,12 @@ const Tag: NextPage = ({
   }
   const products: ProductCardType[] = data.products
 
-  const productsFiltered = products.filter(product => 
-    product.tags.includes(tag))
+  const productsFiltered = products.filter((product) =>
+    product.tags.includes(tag)
+  )
 
   return (
-    <Layout title={`Tag: ${tag}`}>
+    <Layout title={`Tag: ${tag}`} noindex>
       <Title as="h1" mb={4}>
         Tag: {tag}
       </Title>

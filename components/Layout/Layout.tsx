@@ -11,6 +11,7 @@ type Props = {
   children: ReactNode
   title?: string
   description?: string
+  noindex?: boolean
 }
 
 const LayoutContainer = styled(Container, {})
@@ -24,7 +25,12 @@ const LogoContainer = styled(PXContainer, {
   ...tw`pt-4`,
 })
 
-export const Layout = ({children, title, description}: Props): JSX.Element => {
+export const Layout = ({
+  children,
+  title,
+  description,
+  noindex = false,
+}: Props): JSX.Element => {
   const router = useRouter()
   const isHome = router.asPath === '/' ? true : false
   const variants = {
@@ -38,6 +44,7 @@ export const Layout = ({children, title, description}: Props): JSX.Element => {
         title={title}
         description={description}
         openGraph={{title, description}}
+        noindex={noindex}
       />
       <LogoContainer>
         <Logo as={isHome ? `h1` : `p`} />
