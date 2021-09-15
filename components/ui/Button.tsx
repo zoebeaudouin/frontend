@@ -9,7 +9,7 @@ export const Button = styled.button({
     primary: {
       true: {
         ...tw`bg-black text-white`,
-        ...tw`transition duration-500 hover:bg-gray-800 hover:border-gray-800 hover:text-white ease-in-out transform hover:-translate-y-1 hover:scale-110`,
+        ...tw`transition duration-500 hover:bg-black hover:border-black hover:text-white ease-in-out transform hover:-translate-y-1`,
       },
     },
     secondary: {

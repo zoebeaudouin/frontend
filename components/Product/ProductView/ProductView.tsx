@@ -3,7 +3,7 @@ import {
   PRODUCT_CARD_FRAGMENT,
 } from '@components/Product/ProductCard'
 import {
-  Button,
+  AddToCart,
   Container,
   Divider,
   PortableText,
@@ -11,18 +11,23 @@ import {
   Text,
   Title,
 } from '@components/ui'
-import {isProductInStock} from '@lib/product'
+import {getProductUrl, isProductInStock} from '@lib/product'
 import Image from 'next/image'
 import Link from 'next/link'
 import {FC} from 'react'
 import tw, {styled} from 'twin.macro'
 import {gql} from 'urql'
 import Price from './ProductViewPrice'
+import {
+  ProductVariantType,
+  PRODUCT_VARIANT_FRAGMENT,
+} from './ProductViewVariant'
 
 export type ProductViewType = ProductCardType & {
   blurb: string
   descriptionRaw: string
-  tags: string[]
+  defaultProductVariant: ProductVariantType
+  variants: ProductVariantType[]
 }
 
 interface Props {
@@ -35,8 +40,12 @@ export const PRODUCT_VIEW_FRAGMENT = gql`
     blurb
     descriptionRaw
     tags
+    variants {
+      ...ProductVariantFragment
+    }
   }
   ${PRODUCT_CARD_FRAGMENT}
+  ${PRODUCT_VARIANT_FRAGMENT}
 `
 
 const ProductViewContainer = styled.div({
@@ -51,14 +60,17 @@ const ProductViewDetails = styled.div({
 
 export const ProductView: FC<Props> = ({product}) => {
   const {
+    id,
     title,
-    //slug: {current: slug},
-    defaultProductVariant: {price, stock},
+    slug,
+    defaultProductVariant: {stock, price},
     images,
     blurb,
     descriptionRaw,
     tags,
+    variants,
   } = product
+
   const inStock = isProductInStock(stock)
   return (
     <ProductViewContainer>
@@ -90,13 +102,17 @@ export const ProductView: FC<Props> = ({product}) => {
         <Text mb={4}>
           <PortableText content={descriptionRaw} />
         </Text>
-        <Container mb={8}>
+        <Container mb={8} mr={3}>
           {inStock && (
-            <Button primary mr={3}>
-              Add to cart
-            </Button>
+            <AddToCart
+              id={id}
+              price={price}
+              url={getProductUrl(slug)}
+              name={title}
+            />
           )}
         </Container>
+
         <Divider />
 
         <Text mt={8}>

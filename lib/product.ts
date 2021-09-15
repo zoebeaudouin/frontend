@@ -1,3 +1,5 @@
+import {Slug} from '@types'
+
 export const isProductInStock = (stock: number | undefined): boolean => {
   return stock !== 0
 }
@@ -12,3 +14,5 @@ export const formatPrice = (amount: number): string => {
   })
   return formatCurrency.format(amount)
 }
+
+export const getProductUrl = (slug: Slug) => `/shop/${slug.current}`

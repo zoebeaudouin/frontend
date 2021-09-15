@@ -6,6 +6,7 @@ import NextDocument, {
   Main,
   NextScript,
 } from 'next/document'
+import Script from 'next/script'
 import {getCssText} from '../stitches.config'
 
 export default class Document extends NextDocument {
@@ -32,6 +33,12 @@ export default class Document extends NextDocument {
               href={`https://fonts.googleapis.com/css2?family=Urbanist:wght@400;600&family=Roboto+Mono:wght@100;400&display=swap`}
               rel="stylesheet"
             />
+            <link rel="preconnect" href="https://app.snipcart.com" />
+            <link rel="preconnect" href="https://cdn.snipcart.com" />
+            <link
+              rel="stylesheet"
+              href="https://cdn.snipcart.com/themes/v3.2.0/default/snipcart.css"
+            />
           </>
         ),
       }
@@ -46,6 +53,12 @@ export default class Document extends NextDocument {
         <body>
           <Main />
           <NextScript />
+          <Script src="https://cdn.snipcart.com/themes/v3.2.0/default/snipcart.js" />
+          <div
+            hidden
+            id="snipcart"
+            data-api-key={process.env.NEXT_PUBLIC_SNIPCART_API_KEY}
+          ></div>
         </body>
       </Html>
     )

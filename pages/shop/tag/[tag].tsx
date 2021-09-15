@@ -42,13 +42,17 @@ const Tag: NextPage = ({
     return <div>Error</div>
   }
   const products: ProductCardType[] = data.products
+
+  const productsFiltered = products.filter(product => 
+    product.tags.includes(tag))
+
   return (
     <Layout title={`Tag: ${tag}`}>
       <Title as="h1" mb={4}>
         Tag: {tag}
       </Title>
       <ProductGrid>
-        {products.map((product) => (
+        {productsFiltered.map((product) => (
           <ProductCard key={product.slug.current} product={product} />
         ))}
       </ProductGrid>

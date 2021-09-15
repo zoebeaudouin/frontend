@@ -7,6 +7,8 @@ import {styled} from 'twin.macro'
 import type {Slug} from '@types'
 import {isProductInStock} from '@lib/product'
 import {formatPrice} from '@lib/product'
+import {ProductVariantType} from '@components/Product/ProductView/ProductViewVariant'
+import {getProductUrl} from '@lib/product'
 
 type Image = {
   url: string
@@ -14,17 +16,14 @@ type Image = {
 type Asset = {
   asset: Image
 }
-type DefaultProductVariant = {
-  price: number
-  stock?: number
-}
 
 export type ProductCardType = {
   id: string
   title: string
   slug: Slug
   images: Array<Asset>
-  defaultProductVariant: DefaultProductVariant
+  defaultProductVariant: ProductVariantType
+  tags: string[]
 }
 
 interface Props {
@@ -33,6 +32,7 @@ interface Props {
 
 export const PRODUCT_CARD_FRAGMENT = gql`
   fragment ProductCardFragment on Product {
+    id: _id
     title
     slug {
       current
@@ -46,6 +46,7 @@ export const PRODUCT_CARD_FRAGMENT = gql`
       price
       stock
     }
+    tags
   }
 `
 
@@ -65,13 +66,13 @@ const ProductCardContainer = styled.a({
 export const ProductCard: FC<Props> = ({product}) => {
   const {
     title,
-    slug: {current: slug},
+    slug,
     defaultProductVariant: {price, stock},
     images,
   } = product
   const inStock = isProductInStock(stock)
   return (
-    <Link href={`/shop/${slug}`} passHref>
+    <Link href={getProductUrl(slug)} passHref>
       <ProductCardContainer>
         {images && (
           <Image

@@ -13,8 +13,15 @@ type Props = {
   description?: string
 }
 
-const LayoutStyle = styled(Container, {
-  ...tw`p-3`,
+const LayoutContainer = styled(Container, {})
+
+const PXContainer = styled(Container, {
+  ...tw`px-4 md:px-8 2xl:px-48`,
+})
+const MainContainer = styled(PXContainer, {})
+
+const LogoContainer = styled(PXContainer, {
+  ...tw`pt-4`,
 })
 
 export const Layout = ({children, title, description}: Props): JSX.Element => {
@@ -26,13 +33,15 @@ export const Layout = ({children, title, description}: Props): JSX.Element => {
     exit: {opacity: 0, x: 0, y: 0},
   }
   return (
-    <LayoutStyle>
+    <LayoutContainer>
       <NextSeo
         title={title}
         description={description}
         openGraph={{title, description}}
       />
-      <Logo as={isHome ? `h1` : `p`} />
+      <LogoContainer>
+        <Logo as={isHome ? `h1` : `p`} />
+      </LogoContainer>
       <Navbar />
       <motion.main
         initial="hidden"
@@ -41,9 +50,9 @@ export const Layout = ({children, title, description}: Props): JSX.Element => {
         variants={variants}
         transition={{type: 'linear'}}
       >
-        {children}
+        <MainContainer>{children}</MainContainer>
       </motion.main>
       <footer></footer>
-    </LayoutStyle>
+    </LayoutContainer>
   )
 }
