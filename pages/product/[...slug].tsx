@@ -45,7 +45,7 @@ const Product: NextPage = ({
   const {fetching, error, data} = result
   if (fetching) return <Loading />
   if (error) {
-    return <Error>{error.message}</Error>
+    return <Error code={error.message} />
   }
   const product: ProductViewType = data.product?.[0]
   return (
@@ -58,7 +58,7 @@ const Product: NextPage = ({
 export const getStaticProps: GetStaticProps = async ({params}) => {
   // This query is used to populate the cache for the query
   // used on this page.
-  if (params?.slug === undefined) return <div>Error</div>
+  if (params?.slug === undefined) return <Error />
   const slug: Slug = {current: params.slug[0] as string}
   await client?.query(PRODUCT_QUERY, {slug: slug.current}).toPromise()
 

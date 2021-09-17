@@ -14,6 +14,7 @@ import type {
   NextPage,
 } from 'next'
 import {gql, useQuery} from 'urql'
+import {Error} from '@components/ui'
 
 const PRODUCTS_BY_TAG_QUERY = gql`
   query AllProductsByTagQuery {
@@ -39,7 +40,7 @@ const Tag: NextPage = ({
   const {fetching, error, data} = result
   if (fetching) return <Loading />
   if (error) {
-    return <div>Error</div>
+    return <Error code={error.message} />
   }
   const products: ProductCardType[] = data.products
 
@@ -64,7 +65,7 @@ const Tag: NextPage = ({
 export const getStaticProps: GetStaticProps = async ({params}) => {
   // This query is used to populate the cache for the query
   // used on this page.
-  if (params?.tag === undefined) return <div>Error</div>
+  if (params?.tag === undefined) return <Error />
   const tag = params.tag
   await client?.query(PRODUCTS_BY_TAG_QUERY, {tag}).toPromise()
 

@@ -1,6 +1,6 @@
 import {Text} from '@components/ui'
 import {getProductCategoryUrl} from '@lib/product'
-import {styled} from '@stitches/react'
+import {styled} from 'twin.macro'
 import {ProductCategoryType} from '@types'
 import Link from 'next/link'
 import {FC} from 'react'
@@ -9,27 +9,32 @@ interface Props {
   categories: ProductCategoryType[]
 }
 
-const StyledLink = styled(Link, {
-  size: `md`,
+const StyledLink = styled.a({
+  ...tw`text-black font-medium`,
+})
+
+const Container = styled(Text, {
+  size: `base`,
+  ...tw`mb-3`,
   ...tw`text-gray-600`,
-  ...tw`border-b-2 border-gray-600`,
   ...tw`inline-block`,
 })
 
 const Categories: FC<Props> = ({categories}) => (
-  <Text mb={3} size="base">
+  <Container>
     In{` `}
     {categories
       .map((category) => (
-        <StyledLink
+        <Link
           href={getProductCategoryUrl(category.slug)}
           key={category.id}
+          passHref
         >
-          {category.title}
-        </StyledLink>
+          <StyledLink>{category.title}</StyledLink>
+        </Link>
       ))
       .reduce((prev, curr) => [prev, ', ', curr])}
-  </Text>
+  </Container>
 )
 
 export default Categories

@@ -1,25 +1,35 @@
-import {Container, Frame, Text, Title} from '@components/ui'
+import {Container, Frame, Text, Title, Button} from '@components/ui'
 import Image from 'next/image'
 import {FC} from 'react'
 import tw, {styled} from 'twin.macro'
 import doc from './doc.gif'
+import Link from 'next/link'
 
 interface Props {
-  children?: React.ReactNode
+  title?: string
+  message?: string
+  code?: string
+  //children?: React.ReactNode
 }
 
 const Code = styled(Container, {
   ...tw`bg-black p-5 text-green-400 font-bold`,
 })
-export const Error: FC<Props> = ({children}) => (
+export const Error: FC<Props> = ({
+  title = 'Oooops !',
+  message = 'Something went wrroonngg, sorry about that.',
+  code,
+}) => (
   <Frame>
     <Image src={doc} alt={`Loading`} />
-    <Title>Oooops !</Title>
+    <Title>{title}</Title>
     <Text mt={5} mb={5}>
-      Something went wrroonngg, sorry about that.{' '}
-      {children && <>Please contact me with this code:</>}
+      {message}
+      {code && <>Please contact me with the error code below.</>}
     </Text>
-
-    {children && <Code>{children}</Code>}
+    <Link href={'/'} passHref>
+      <Button primary>Go back home</Button>
+    </Link>
+    {code && <Code>{code}</Code>}
   </Frame>
 )

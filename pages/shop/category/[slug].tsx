@@ -51,7 +51,7 @@ const Category: NextPage = ({
   const {fetching, error, data} = result
   if (fetching) return <Loading />
   if (error) {
-    return <Error>{error.message}</Error>
+    return <Error code={error.message} />
   }
   const products: ProductCardType[] = data.products
   const category: ProductCategoryType = data.category && data.category[0]
