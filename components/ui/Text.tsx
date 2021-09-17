@@ -8,6 +8,7 @@ export const Text = styled(Container, {
       sm: tw`text-2xl`,
       md: tw`text-3xl`,
       lg: tw`text-6xl`,
+      '6xl': tw`text-6xl`,
     },
   },
   defaultVariants: {

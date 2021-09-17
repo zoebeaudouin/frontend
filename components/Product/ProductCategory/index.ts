@@ -1,1 +1,1 @@
-export type {ProductCategory} from './ProductCategory'
+export * from './ProductCategory'

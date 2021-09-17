@@ -5,7 +5,7 @@ import {
   PRODUCT_CARD_FRAGMENT,
 } from '@components/Product/ProductCard'
 import {ProductGrid} from '@components/Product/ProductGrid'
-import {Title} from '@components/ui'
+import {Loading, Title} from '@components/ui'
 import {client, ssrCache} from '@lib/urqlClient'
 import type {
   GetStaticPaths,
@@ -37,7 +37,7 @@ const Tag: NextPage = ({
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [result] = useQuery({query: PRODUCTS_BY_TAG_QUERY})
   const {fetching, error, data} = result
-  if (fetching) return <div>Loading...</div>
+  if (fetching) return <Loading />
   if (error) {
     return <div>Error</div>
   }
@@ -48,9 +48,9 @@ const Tag: NextPage = ({
   )
 
   return (
-    <Layout title={`Tag: ${tag}`} noindex>
+    <Layout title={`#${tag}`} noindex>
       <Title as="h1" mb={4}>
-        Tag: {tag}
+        #{tag}
       </Title>
       <ProductGrid>
         {productsFiltered.map((product) => (

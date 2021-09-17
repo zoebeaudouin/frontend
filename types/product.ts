@@ -1,6 +1,6 @@
 import type {Slug, Asset} from '@types'
 
-export type ProductCategory = {
+export type ProductCategoryType = {
   id: string
   title: string
   slug: Slug
@@ -13,7 +13,7 @@ export type ProductCardType = {
   images: Array<Asset>
   defaultProductVariant: ProductVariantType
   tags: string[]
-  categories: ProductCategory[]
+  categories: ProductCategoryType[]
 }
 
 export type ProductViewType = ProductCardType & {
@@ -21,6 +21,7 @@ export type ProductViewType = ProductCardType & {
   descriptionRaw: string
   defaultProductVariant: ProductVariantType
   variants: ProductVariantType[]
+  categories: ProductCategoryType[]
 }
 
 export interface ProductVariantType {
@@ -28,5 +29,4 @@ export interface ProductVariantType {
   title?: string
   price: number
   stock: number
-  hexColor?: string
 }

@@ -15,4 +15,11 @@ export const formatPrice = (amount: number): string => {
   return formatCurrency.format(amount)
 }
 
-export const getProductUrl = (slug: Slug) => `/shop/${slug.current}`
+export const getProductUrl = (slug: Slug): string =>
+  `/product/${encodeURIComponent(slug.current)}`
+
+export const getProductCategoryUrl = (slug: Slug): string =>
+  `/shop/category/${encodeURIComponent(slug.current)}`
+
+export const getProductTagUrl = (tag: string): string =>
+  `/shop/tag/${encodeURIComponent(tag)}`

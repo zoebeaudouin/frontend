@@ -48,6 +48,8 @@ const ProductCardContainer = styled.a({
   },
 })
 
+const ProductCardImageContainer = styled.div({width: '100%'})
+
 export const ProductCard: FC<Props> = ({product}) => {
   const {
     title,
@@ -60,13 +62,15 @@ export const ProductCard: FC<Props> = ({product}) => {
     <Link href={getProductUrl(slug)} passHref>
       <ProductCardContainer>
         {images && (
-          <Image
-            src={images[0]?.asset.url}
-            alt={title || 'Product Image'}
-            width={500}
-            height={500}
-            layout="responsive"
-          />
+          <ProductCardImageContainer>
+            <Image
+              src={images[0]?.asset.url}
+              alt={title || 'Product Image'}
+              width={500}
+              height={500}
+              layout="responsive"
+            />
+          </ProductCardImageContainer>
         )}
         <Title as="h2" size="sm" px={3} pt={3}>
           {title}

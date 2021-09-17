@@ -14,7 +14,6 @@ export const PRODUCT_VARIANT_FRAGMENT = gql`
     title
     price
     stock
-    hexColor
   }
 `
 

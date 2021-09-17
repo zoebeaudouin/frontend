@@ -5,6 +5,7 @@ import {
   PRODUCT_CARD_FRAGMENT,
 } from '@components/Product/ProductCard'
 import {ProductGrid} from '@components/Product/ProductGrid'
+import {Loading, Error} from '@components/ui'
 import {client, ssrCache} from '@lib/urqlClient'
 import type {GetStaticProps, NextPage} from 'next'
 import {gql, useQuery} from 'urql'
@@ -21,9 +22,9 @@ const PRODUCTS_QUERY = gql`
 const Index: NextPage = () => {
   const [result] = useQuery({query: PRODUCTS_QUERY})
   const {fetching, error, data} = result
-  if (fetching) return <div>Loading...</div>
+  if (fetching) return <Loading />
   if (error) {
-    return <div>Error</div>
+    return <Error>{error.message}</Error>
   }
   const products: ProductCardType[] = data.products
   return (
