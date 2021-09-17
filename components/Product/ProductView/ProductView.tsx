@@ -1,7 +1,4 @@
-import {
-  ProductCardType,
-  PRODUCT_CARD_FRAGMENT,
-} from '@components/Product/ProductCard'
+import {PRODUCT_CARD_FRAGMENT} from '@components/Product/ProductCard'
 import {
   AddToCart,
   Container,
@@ -17,18 +14,10 @@ import Link from 'next/link'
 import {FC} from 'react'
 import tw, {styled} from 'twin.macro'
 import {gql} from 'urql'
-import Price from './ProductViewPrice'
-import {
-  ProductVariantType,
-  PRODUCT_VARIANT_FRAGMENT,
-} from './ProductViewVariant'
+import Price from '@components/Product/ProductView/ProductViewPrice'
+import {PRODUCT_VARIANT_FRAGMENT} from '@components/Product/ProductView/ProductViewVariant'
 
-export type ProductViewType = ProductCardType & {
-  blurb: string
-  descriptionRaw: string
-  defaultProductVariant: ProductVariantType
-  variants: ProductVariantType[]
-}
+import type {ProductViewType} from '@types'
 
 interface Props {
   product: ProductViewType
@@ -42,6 +31,10 @@ export const PRODUCT_VIEW_FRAGMENT = gql`
     tags
     variants {
       ...ProductVariantFragment
+    }
+    categories {
+      title
+      slug
     }
   }
   ${PRODUCT_CARD_FRAGMENT}
@@ -68,7 +61,6 @@ export const ProductView: FC<Props> = ({product}) => {
     blurb,
     descriptionRaw,
     tags,
-    variants,
   } = product
 
   const inStock = isProductInStock(stock)

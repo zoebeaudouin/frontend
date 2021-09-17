@@ -1,16 +1,9 @@
 import {Text} from '@components/ui'
 import {styled} from '@stitches/react'
+import type {ProductVariantType} from '@types'
 import {FC} from 'react'
 import tw from 'twin.macro'
 import {gql} from 'urql'
-
-interface ProductVariantType {
-  default: boolean
-  title?: string
-  price: number
-  stock: number
-  hexColor?: string
-}
 
 interface Props {
   variant: ProductVariantType

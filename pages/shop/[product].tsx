@@ -25,7 +25,7 @@ const PRODUCT_QUERY = gql`
 
 const ALL_PRODUCT_SLUGS_QUERY = gql`
   query AllProductSlugs {
-    slugs: allProduct {
+    products: allProduct {
       id: _id
       slug {
         current
@@ -75,14 +75,16 @@ export const getStaticPaths: GetStaticPaths = async () => {
     ?.query(ALL_PRODUCT_SLUGS_QUERY)
     .toPromise()
     .then((result) => {
-      return result.data.slugs.map(({id, slug}: {id: string; slug: Slug}) => {
-        return {
-          params: {
-            id: id,
-            product: slug.current,
-          },
+      return result.data.products.map(
+        ({id, slug}: {id: string; slug: Slug}) => {
+          return {
+            params: {
+              id: id,
+              product: slug.current,
+            },
+          }
         }
-      })
+      )
     })
   return {
     paths,

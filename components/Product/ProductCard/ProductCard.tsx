@@ -4,27 +4,12 @@ import {Title, Text} from '@components/ui'
 import Link from 'next/link'
 import Image from 'next/image'
 import {styled} from 'twin.macro'
-import type {Slug} from '@types'
+
 import {isProductInStock} from '@lib/product'
 import {formatPrice} from '@lib/product'
-import {ProductVariantType} from '@components/Product/ProductView/ProductViewVariant'
+
 import {getProductUrl} from '@lib/product'
-
-type Image = {
-  url: string
-}
-type Asset = {
-  asset: Image
-}
-
-export type ProductCardType = {
-  id: string
-  title: string
-  slug: Slug
-  images: Array<Asset>
-  defaultProductVariant: ProductVariantType
-  tags: string[]
-}
+import type {ProductCardType} from '@types'
 
 interface Props {
   product: ProductCardType

@@ -4,6 +4,7 @@ import {
   ProductCardType,
   PRODUCT_CARD_FRAGMENT,
 } from '@components/Product/ProductCard'
+import type {ProductCategory} from '@components/Product/ProductCategory'
 import {ProductGrid} from '@components/Product/ProductGrid'
 import {Title} from '@components/ui'
 import {client, ssrCache} from '@lib/urqlClient'
@@ -15,8 +16,8 @@ import type {
 } from 'next'
 import {gql, useQuery} from 'urql'
 
-const PRODUCTS_BY_TAG_QUERY = gql`
-  query AllProductsByTagQuery {
+const PRODUCTS_BY_CATEGORY_QUERY = gql`
+  query AllProductsByCategoryQuery {
     products: allProduct {
       ...ProductCardFragment
     }
@@ -24,18 +25,22 @@ const PRODUCTS_BY_TAG_QUERY = gql`
   ${PRODUCT_CARD_FRAGMENT}
 `
 
-const ALL_PRODUCT_TAGS_QUERY = gql`
-  query AllProductTags {
-    products: allProduct {
-      tags
+const ALL_CATEGORIES_QUERY = gql`
+  query AllCategories {
+    categories: allCategory {
+      id: _id
+      title
+      slug {
+        current
+      }
     }
   }
 `
 
-const Tag: NextPage = ({
-  tag,
+const Category: NextPage = ({
+  category,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
-  const [result] = useQuery({query: PRODUCTS_BY_TAG_QUERY})
+  const [result] = useQuery({query: PRODUCTS_BY_CATEGORY_QUERY})
   const {fetching, error, data} = result
   if (fetching) return <div>Loading...</div>
   if (error) {
@@ -44,13 +49,13 @@ const Tag: NextPage = ({
   const products: ProductCardType[] = data.products
 
   const productsFiltered = products.filter((product) =>
-    product.tags.includes(tag)
+    product.categories?.includes(category)
   )
 
   return (
-    <Layout title={`Tag: ${tag}`} noindex>
+    <Layout title={category}>
       <Title as="h1" mb={4}>
-        Tag: {tag}
+        {category}
       </Title>
       <ProductGrid>
         {productsFiltered.map((product) => (
@@ -64,13 +69,13 @@ const Tag: NextPage = ({
 export const getStaticProps: GetStaticProps = async ({params}) => {
   // This query is used to populate the cache for the query
   // used on this page.
-  if (params?.tag === undefined) return <div>Error</div>
-  const tag = params.tag
-  await client?.query(PRODUCTS_BY_TAG_QUERY, {tag}).toPromise()
+  if (params?.category === undefined) return <div>Error</div>
+  const category = params.category
+  await client?.query(PRODUCTS_BY_CATEGORY_QUERY, {category}).toPromise()
 
   return {
     props: {
-      tag,
+      category,
       urqlState: ssrCache.extractData(),
     },
     revalidate: 600,
@@ -78,26 +83,23 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  let allTags: string[] = []
-  await client
-    ?.query(ALL_PRODUCT_TAGS_QUERY)
+  const paths = await client
+    ?.query(ALL_CATEGORIES_QUERY)
     .toPromise()
     .then((result) => {
-      result.data.products.map(({tags}: {tags: string[]}) => {
-        tags.map((tag) => {
-          allTags = [...new Set([...allTags, tag])]
-        })
+      return result.data.categories.map((category: ProductCategory) => {
+        return {
+          params: {
+            id: category.id,
+            category: category.slug.current,
+          },
+        }
       })
     })
-  const paths = allTags.map((tag) => ({
-    params: {
-      tag,
-    },
-  }))
   return {
     paths,
     fallback: 'blocking',
   }
 }
 
-export default Tag
+export default Category
