@@ -5,6 +5,7 @@ import {AppProps} from 'next/app'
 import NextNprogress from 'nextjs-progressbar'
 import {Provider} from 'urql'
 import globalStyles from '../styles/global'
+import Script from 'next/script'
 
 export default function MyApp({Component, pageProps, router}: AppProps) {
   const url = `https://zoebeaudouin.com${router.route}`
@@ -28,6 +29,7 @@ export default function MyApp({Component, pageProps, router}: AppProps) {
         }}
         canonical={url}
       />
+      <Script src="https://cdn.snipcart.com/themes/v3.2.0/default/snipcart.js" />
       <NextNprogress
         color="#29D"
         startPosition={0.3}

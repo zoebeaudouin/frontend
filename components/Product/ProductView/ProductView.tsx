@@ -52,7 +52,7 @@ const ProductViewContainer = styled.div({
   ...tw`grid grid-cols-1 md:grid-cols-2`,
 })
 
-const ProductViewImageContainer = styled.div({})
+const ProductViewImageContainer = styled.div({width: '100%'})
 
 const ProductViewDetails = styled.div({
   ...tw`md:px-6 py-3`,
@@ -118,7 +118,7 @@ export const ProductView: FC<Props> = ({product}) => {
 
         <Divider />
 
-        <Text mt={8}>
+        <Text mt={8} text={`sm`}>
           Tags:{' '}
           {tags.map((tag) => (
             <Link key={tag} href={`/shop/tag/${tag}`} passHref>

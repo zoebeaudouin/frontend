@@ -63,5 +63,12 @@ export const Container = styled.div({
       7: tw`mb-7`,
       8: tw`mb-8`,
     },
+    text: {
+      xs: tw`text-xs`,
+      sm: tw`text-sm`,
+      base: tw`text-base`,
+      lg: tw`text-lg`,
+      xl: tw`text-xl`,
+    },
   },
 })

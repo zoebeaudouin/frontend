@@ -6,7 +6,6 @@ import NextDocument, {
   Main,
   NextScript,
 } from 'next/document'
-import Script from 'next/script'
 import {getCssText} from '../stitches.config'
 
 export default class Document extends NextDocument {
@@ -53,7 +52,6 @@ export default class Document extends NextDocument {
         <body>
           <Main />
           <NextScript />
-          <Script src="https://cdn.snipcart.com/themes/v3.2.0/default/snipcart.js" />
           <div
             hidden
             id="snipcart"

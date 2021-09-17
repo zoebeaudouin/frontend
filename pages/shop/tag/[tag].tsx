@@ -1,11 +1,11 @@
 import {Layout} from '@components/Layout'
-import {Title} from '@components/ui'
 import {
   ProductCard,
   ProductCardType,
   PRODUCT_CARD_FRAGMENT,
 } from '@components/Product/ProductCard'
 import {ProductGrid} from '@components/Product/ProductGrid'
+import {Title} from '@components/ui'
 import {client, ssrCache} from '@lib/urqlClient'
 import type {
   GetStaticPaths,
@@ -14,7 +14,6 @@ import type {
   NextPage,
 } from 'next'
 import {gql, useQuery} from 'urql'
-import {NextSeo} from 'next-seo'
 
 const PRODUCTS_BY_TAG_QUERY = gql`
   query AllProductsQuery {
