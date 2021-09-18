@@ -7,7 +7,7 @@ import {
 import {ProductGrid} from '@components/Product/ProductGrid'
 import {Error, Loading, Title} from '@components/ui'
 import {client, ssrCache} from '@lib/urqlClient'
-import type {ProductCardType, ProductCategoryType} from '@types'
+import type {Product, ProductCategory} from '@types'
 import type {
   GetStaticPaths,
   GetStaticProps,
@@ -53,15 +53,15 @@ const Category: NextPage = ({
   if (error) {
     return <Error code={error.message} />
   }
-  const products: ProductCardType[] = data.products
-  const category: ProductCategoryType = data.category && data.category[0]
+  const products: Product[] = data.products
+  const category: ProductCategory = data.category && data.category[0]
 
-  const productsFiltered = products.filter(
-    (product) =>
-      product.categories.filter(
-        (c: ProductCategoryType) => c.id === category.id
-      ).length > 0
-  )
+  const productsFiltered = products.filter((product) => {
+    const categoriesFiltered = product?.categories?.filter(
+      (c: ProductCategory) => c.id === category.id
+    )
+    return categoriesFiltered && categoriesFiltered.length > 0
+  })
 
   return (
     <Layout title={category.title}>
@@ -101,7 +101,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     ?.query(ALL_CATEGORIES_QUERY)
     .toPromise()
     .then((result) => {
-      return result.data.categories.map((category: ProductCategoryType) => {
+      return result.data.categories.map((category: ProductCategory) => {
         return {
           params: {
             id: category.id,

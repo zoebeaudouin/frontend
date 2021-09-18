@@ -1,8 +1,11 @@
-import {PRODUCT_CARD_FRAGMENT} from '@components/Product/ProductCard'
-import {PRODUCT_CATEGORY_FRAGMENT} from '@components/Product/ProductCategory/ProductCategory'
+import {
+  PRODUCT_CARD_FRAGMENT,
+  PRODUCT_CATEGORY_FRAGMENT,
+  PRODUCT_OPTIONS_FRAGMENT,
+  PRODUCT_VARIANT_FRAGMENT,
+} from '@components/Product'
 import Categories from '@components/Product/ProductView/ProductViewCategories'
 import Price from '@components/Product/ProductView/ProductViewPrice'
-import {PRODUCT_VARIANT_FRAGMENT} from '@components/Product/ProductView/ProductViewVariant'
 import {
   AddToCart,
   Container,
@@ -13,16 +16,13 @@ import {
   Title,
 } from '@components/ui'
 import {getProductTagUrl, getProductUrl, isProductInStock} from '@lib/product'
-import type {ProductViewType} from '@types'
+import type {Product} from '@types'
 import Image from 'next/image'
 import Link from 'next/link'
 import {FC} from 'react'
 import tw, {styled} from 'twin.macro'
 import {gql} from 'urql'
-
-interface Props {
-  product: ProductViewType
-}
+import {ProductOptions} from '@components/Product'
 
 export const PRODUCT_VIEW_FRAGMENT = gql`
   fragment ProductViewFragment on Product {
@@ -36,10 +36,12 @@ export const PRODUCT_VIEW_FRAGMENT = gql`
     categories {
       ...ProductCategoryFragment
     }
+    ...ProductOptionsFragment
   }
   ${PRODUCT_CARD_FRAGMENT}
   ${PRODUCT_VARIANT_FRAGMENT}
   ${PRODUCT_CATEGORY_FRAGMENT}
+  ${PRODUCT_OPTIONS_FRAGMENT}
 `
 
 const ProductViewContainer = styled.div({
@@ -52,6 +54,9 @@ const ProductViewDetails = styled.div({
   ...tw`md:px-6 py-3`,
 })
 
+interface Props {
+  product: Product
+}
 export const ProductView: FC<Props> = ({product}) => {
   const {
     id,
@@ -63,14 +68,16 @@ export const ProductView: FC<Props> = ({product}) => {
     descriptionRaw,
     tags,
     categories,
+    options,
   } = product
 
   const inStock = isProductInStock(stock)
   const imageUrl = images[0]?.asset.url
+
   return (
     <ProductViewContainer>
       <ProductViewImageContainer>
-        {images && (
+        {imageUrl && (
           <Image
             src={imageUrl}
             alt={title || 'Product Image'}
@@ -96,9 +103,9 @@ export const ProductView: FC<Props> = ({product}) => {
           )}
         </Text>
         <Text mb={4}>
-          <PortableText content={descriptionRaw} />
+          {descriptionRaw && <PortableText content={descriptionRaw} />}
         </Text>
-        <Container mb={8} mr={3}>
+        <Container mb={8}>
           {inStock && (
             <AddToCart
               id={id}
@@ -110,17 +117,24 @@ export const ProductView: FC<Props> = ({product}) => {
             />
           )}
         </Container>
+        {options && (
+          <Container mb={8}>
+            <ProductOptions options={options} />
+          </Container>
+        )}
 
         <Divider />
 
-        <Text mt={8} text={`sm`}>
-          Tags:{' '}
-          {tags.map((tag) => (
-            <Link key={tag} href={getProductTagUrl(tag)} passHref>
-              <Tag as="a">{tag}</Tag>
-            </Link>
-          ))}
-        </Text>
+        {tags && (
+          <Text mt={8} text={`sm`}>
+            Tags:{' '}
+            {tags.map((tag) => (
+              <Link key={tag} href={getProductTagUrl(tag)} passHref>
+                <Tag as="a">{tag}</Tag>
+              </Link>
+            ))}
+          </Text>
+        )}
       </ProductViewDetails>
     </ProductViewContainer>
   )

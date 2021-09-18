@@ -4,7 +4,7 @@ import {
   PRODUCT_VIEW_FRAGMENT,
 } from '@components/Product/ProductView'
 import {client, ssrCache} from '@lib/urqlClient'
-import type {ProductCardType, Slug} from '@types'
+import type {Product, Slug} from '@types'
 import type {
   GetStaticPaths,
   GetStaticProps,
@@ -13,7 +13,6 @@ import type {
 } from 'next'
 import {gql, useQuery} from 'urql'
 import {Loading, Error} from '@components/ui'
-import type {ProductViewType} from '@types'
 
 const PRODUCT_QUERY = gql`
   query ProductQuery($slug: String!) {
@@ -35,7 +34,7 @@ const ALL_PRODUCT_SLUGS_QUERY = gql`
   }
 `
 
-const Product: NextPage = ({
+const ProductPage: NextPage = ({
   slug,
 }: InferGetStaticPropsType<typeof getStaticProps>) => {
   const [result] = useQuery({
@@ -47,7 +46,7 @@ const Product: NextPage = ({
   if (error) {
     return <Error code={error.message} />
   }
-  const product: ProductViewType = data.product?.[0]
+  const product: Product = data.product?.[0]
   return (
     <Layout title={product.title} description={product.blurb}>
       <ProductView key={product.slug.current} product={product} />
@@ -76,7 +75,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     ?.query(ALL_PRODUCT_SLUGS_QUERY)
     .toPromise()
     .then((result) => {
-      return result.data.products.map((product: ProductCardType) => {
+      return result.data.products.map((product: Product) => {
         return {
           params: {
             id: product.id,
@@ -91,4 +90,4 @@ export const getStaticPaths: GetStaticPaths = async () => {
   }
 }
 
-export default Product
+export default ProductPage

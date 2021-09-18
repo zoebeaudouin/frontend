@@ -1,12 +1,12 @@
 import {Text} from '@components/ui'
 import {getProductCategoryUrl} from '@lib/product'
 import {styled} from 'twin.macro'
-import {ProductCategoryType} from '@types'
+import {ProductCategory} from '@types'
 import Link from 'next/link'
 import {FC} from 'react'
 import tw from 'twin.macro'
 interface Props {
-  categories: ProductCategoryType[]
+  categories: ProductCategory[]
 }
 
 const StyledLink = styled.a({

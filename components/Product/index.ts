@@ -1,4 +1,7 @@
 export * from './ProductCard'
 export * from './ProductCategory'
 export * from './ProductGrid'
+export * from './ProductOptions'
+export * from './ProductSwatch'
+export * from './ProductVariant'
 export * from './ProductView'

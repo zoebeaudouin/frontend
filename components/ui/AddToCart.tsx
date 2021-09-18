@@ -6,7 +6,7 @@ interface Props {
   price: number
   url: string
   name: string
-  description: string
+  description?: string
   imageUrl: string
 }
 

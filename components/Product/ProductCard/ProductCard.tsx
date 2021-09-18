@@ -9,10 +9,10 @@ import {isProductInStock} from '@lib/product'
 import {formatPrice} from '@lib/product'
 
 import {getProductUrl} from '@lib/product'
-import type {ProductCardType} from '@types'
+import type {Product} from '@types'
 
 interface Props {
-  product: ProductCardType
+  product: Product
 }
 
 export const PRODUCT_CARD_FRAGMENT = gql`
@@ -31,7 +31,6 @@ export const PRODUCT_CARD_FRAGMENT = gql`
       price
       stock
     }
-    tags
   }
 `
 

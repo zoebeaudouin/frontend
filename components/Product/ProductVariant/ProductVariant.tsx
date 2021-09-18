@@ -1,12 +1,12 @@
 import {Text} from '@components/ui'
 import {styled} from '@stitches/react'
-import type {ProductVariantType} from '@types'
+import type {IProductVariant} from '@types'
 import {FC} from 'react'
 import tw from 'twin.macro'
 import {gql} from 'urql'
 
 interface Props {
-  variant: ProductVariantType
+  variant: IProductVariant
 }
 
 export const PRODUCT_VARIANT_FRAGMENT = gql`
@@ -28,4 +28,3 @@ const ProductVariant: FC<Props> = ({variant}) => (
   </>
 )
 export default ProductVariant
-export type {ProductVariantType}

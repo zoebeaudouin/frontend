@@ -1,32 +1,42 @@
 import type {Slug, Asset} from '@types'
 
-export type ProductCategoryType = {
+export interface ProductCategory {
   id: string
   title: string
   slug: Slug
 }
 
-export type ProductCardType = {
+export interface Product {
+  // CARD
   id: string
   title: string
   slug: Slug
   images: Array<Asset>
-  defaultProductVariant: ProductVariantType
-  tags: string[]
-  categories: ProductCategoryType[]
+  defaultProductVariant: IProductVariant
+  // VIEW
+  tags?: string[]
+  categories?: ProductCategory[]
+  blurb?: string
+  descriptionRaw?: string
+  variants?: IProductVariant[]
+  options?: IProductOption[]
 }
 
-export type ProductViewType = ProductCardType & {
-  blurb: string
-  descriptionRaw: string
-  defaultProductVariant: ProductVariantType
-  variants: ProductVariantType[]
-  categories: ProductCategoryType[]
-}
-
-export interface ProductVariantType {
+export interface IProductVariant {
   default: boolean
   title?: string
   price: number
   stock: number
+}
+
+export interface IProductOptionValue {
+  id: string
+  label: string
+  hexColor?: string
+}
+
+export interface IProductOption {
+  id: string
+  name: string
+  values: IProductOptionValue[]
 }

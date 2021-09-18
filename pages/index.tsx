@@ -1,7 +1,6 @@
 import {Layout} from '@components/Layout'
 import {
   ProductCard,
-  ProductCardType,
   PRODUCT_CARD_FRAGMENT,
 } from '@components/Product/ProductCard'
 import {ProductGrid} from '@components/Product/ProductGrid'
@@ -9,6 +8,7 @@ import {Loading, Error} from '@components/ui'
 import {client, ssrCache} from '@lib/urqlClient'
 import type {GetStaticProps, NextPage} from 'next'
 import {gql, useQuery} from 'urql'
+import type {Product} from '@types'
 
 const PRODUCTS_QUERY = gql`
   query AllProductsQuery {
@@ -26,7 +26,7 @@ const Index: NextPage = () => {
   if (error) {
     return <Error code={error.message} />
   }
-  const products: ProductCardType[] = data.products
+  const products: Product[] = data.products
   return (
     <Layout>
       <ProductGrid>

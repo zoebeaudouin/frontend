@@ -1,7 +1,6 @@
 import {Layout} from '@components/Layout'
 import {
   ProductCard,
-  ProductCardType,
   PRODUCT_CARD_FRAGMENT,
 } from '@components/Product/ProductCard'
 import {ProductGrid} from '@components/Product/ProductGrid'
@@ -15,11 +14,13 @@ import type {
 } from 'next'
 import {gql, useQuery} from 'urql'
 import {Error} from '@components/ui'
+import type {Product} from '@types'
 
 const PRODUCTS_BY_TAG_QUERY = gql`
   query AllProductsByTagQuery {
     products: allProduct {
       ...ProductCardFragment
+      tags
     }
   }
   ${PRODUCT_CARD_FRAGMENT}
@@ -42,10 +43,10 @@ const Tag: NextPage = ({
   if (error) {
     return <Error code={error.message} />
   }
-  const products: ProductCardType[] = data.products
+  const products: Product[] = data.products
 
   const productsFiltered = products.filter((product) =>
-    product.tags.includes(tag)
+    product?.tags?.includes(tag)
   )
 
   return (
