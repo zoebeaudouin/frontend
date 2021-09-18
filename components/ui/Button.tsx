@@ -2,14 +2,14 @@ import tw, {styled} from 'twin.macro'
 
 export const Button = styled.button({
   ...tw`rounded-full`,
-  ...tw`px-3 py-2`,
+  ...tw`px-6 md:px-4 py-2`,
   ...tw`border-black border-2`,
   fontFamily: '$urbanist',
   variants: {
     primary: {
       true: {
         ...tw`bg-black text-white`,
-        ...tw`transition duration-500 ease-in-out hover:bg-black hover:border-black hover:text-white  transform hover:-translate-y-1`,
+        ...tw`transition duration-500 ease-in-out hover:bg-black hover:border-black hover:text-white transform hover:-translate-y-1`,
       },
     },
     secondary: {

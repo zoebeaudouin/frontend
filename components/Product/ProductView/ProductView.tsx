@@ -1,4 +1,5 @@
 import {
+  ProductOptions,
   PRODUCT_CARD_FRAGMENT,
   PRODUCT_CATEGORY_FRAGMENT,
   PRODUCT_OPTIONS_FRAGMENT,
@@ -6,23 +7,21 @@ import {
 } from '@components/Product'
 import Categories from '@components/Product/ProductView/ProductViewCategories'
 import Price from '@components/Product/ProductView/ProductViewPrice'
+import Tags from '@components/Product/ProductView/ProductViewTags'
 import {
   AddToCart,
   Container,
   Divider,
   PortableText,
-  Tag,
   Text,
   Title,
 } from '@components/ui'
-import {getProductTagUrl, getProductUrl, isProductInStock} from '@lib/product'
+import {getProductUrl, isProductInStock} from '@lib/product'
 import type {Product} from '@types'
 import Image from 'next/image'
-import Link from 'next/link'
 import {FC} from 'react'
 import tw, {styled} from 'twin.macro'
 import {gql} from 'urql'
-import {ProductOptions} from '@components/Product'
 
 export const PRODUCT_VIEW_FRAGMENT = gql`
   fragment ProductViewFragment on Product {
@@ -50,8 +49,12 @@ const ProductViewContainer = styled.div({
 
 const ProductViewImageContainer = styled.div({width: '100%'})
 
+const ProductViewThumbnails = styled.div({
+  ...tw`grid grid-cols-3 my-3`,
+})
+
 const ProductViewDetails = styled.div({
-  ...tw`md:px-6 py-3`,
+  ...tw`px-4 py-3`,
 })
 
 interface Props {
@@ -72,19 +75,35 @@ export const ProductView: FC<Props> = ({product}) => {
   } = product
 
   const inStock = isProductInStock(stock)
-  const imageUrl = images[0]?.asset.url
+  const mainImageUrl = images[0]?.asset.url
 
   return (
     <ProductViewContainer>
       <ProductViewImageContainer>
-        {imageUrl && (
+        {mainImageUrl && (
           <Image
-            src={imageUrl}
+            src={mainImageUrl}
             alt={title || 'Product Image'}
             width={1000}
             height={1000}
             layout="responsive"
           />
+        )}
+        {images.length > 1 && (
+          <ProductViewThumbnails>
+            {images
+              .filter((image) => image.asset.url !== mainImageUrl)
+              .map((image) => (
+                <Image
+                  key={image.asset.url}
+                  src={image.asset.url}
+                  alt={title || 'Thumbnail'}
+                  width={300}
+                  height={300}
+                  layout="responsive"
+                />
+              ))}
+          </ProductViewThumbnails>
         )}
       </ProductViewImageContainer>
       <ProductViewDetails>
@@ -105,7 +124,7 @@ export const ProductView: FC<Props> = ({product}) => {
         <Text mb={4}>
           {descriptionRaw && <PortableText content={descriptionRaw} />}
         </Text>
-        <Container mb={8}>
+        <Container mb={4}>
           {inStock && (
             <AddToCart
               id={id}
@@ -113,7 +132,7 @@ export const ProductView: FC<Props> = ({product}) => {
               url={getProductUrl(slug)}
               description={blurb}
               name={title}
-              imageUrl={imageUrl}
+              imageUrl={mainImageUrl}
             />
           )}
         </Container>
@@ -125,16 +144,7 @@ export const ProductView: FC<Props> = ({product}) => {
 
         <Divider />
 
-        {tags && (
-          <Text mt={8} text={`sm`}>
-            Tags:{' '}
-            {tags.map((tag) => (
-              <Link key={tag} href={getProductTagUrl(tag)} passHref>
-                <Tag as="a">{tag}</Tag>
-              </Link>
-            ))}
-          </Text>
-        )}
+        {tags && <Tags tags={tags} />}
       </ProductViewDetails>
     </ProductViewContainer>
   )

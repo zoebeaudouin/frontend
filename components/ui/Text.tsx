@@ -5,10 +5,9 @@ export const Text = styled(Container, {
   variants: {
     size: {
       base: tw`text-base`,
-      sm: tw`text-2xl`,
-      md: tw`text-3xl`,
-      lg: tw`text-6xl`,
-      '6xl': tw`text-6xl`,
+      sm: tw`text-lg md:text-xl lg:text-2xl`,
+      md: tw`text-xl md:text-2xl lg:text-3xl`,
+      lg: tw`text-4xl md:text-5xl lg:text-6xl`,
     },
   },
   defaultVariants: {

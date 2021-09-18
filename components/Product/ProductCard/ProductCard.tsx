@@ -3,7 +3,7 @@ import {gql} from 'urql'
 import {Title, Text} from '@components/ui'
 import Link from 'next/link'
 import Image from 'next/image'
-import {styled} from 'twin.macro'
+import tw, {styled} from 'twin.macro'
 
 import {isProductInStock} from '@lib/product'
 import {formatPrice} from '@lib/product'
@@ -49,6 +49,10 @@ const ProductCardContainer = styled.a({
 
 const ProductCardImageContainer = styled.div({width: '100%'})
 
+const ProductCardDetails = styled.div({
+  ...tw`p-3`,
+})
+
 export const ProductCard: FC<Props> = ({product}) => {
   const {
     title,
@@ -71,12 +75,12 @@ export const ProductCard: FC<Props> = ({product}) => {
             />
           </ProductCardImageContainer>
         )}
-        <Title as="h2" size="sm" px={3} pt={3}>
-          {title}
-        </Title>
-        <Text px={3} pb={3}>
-          {inStock ? `${formatPrice(price)}` : 'Out of stock'}
-        </Text>
+        <ProductCardDetails>
+          <Title as="h2" size="sm">
+            {title}
+          </Title>
+          <Text>{inStock ? `${formatPrice(price)}` : 'Out of stock'}</Text>
+        </ProductCardDetails>
       </ProductCardContainer>
     </Link>
   )

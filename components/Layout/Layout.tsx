@@ -1,9 +1,7 @@
-import {Logo} from '@components/Logo'
-import {Navbar} from '@components/Navbar'
+import {Header} from '@components/Header'
 import {Container} from '@components/ui'
 import {motion} from 'framer-motion'
 import {NextSeo} from 'next-seo'
-import {useRouter} from 'next/router'
 import React, {ReactNode} from 'react'
 import tw, {styled} from 'twin.macro'
 
@@ -16,13 +14,8 @@ type Props = {
 
 const LayoutContainer = styled(Container, {})
 
-const PXContainer = styled(Container, {
-  ...tw`px-4 md:px-8 2xl:px-48`,
-})
-const MainContainer = styled(PXContainer, {})
-
-const LogoContainer = styled(PXContainer, {
-  ...tw`pt-4`,
+const MainContainer = styled(Container, {
+  ...tw`px-0 sm:px-8 2xl:px-48`,
 })
 
 export const Layout = ({
@@ -31,8 +24,6 @@ export const Layout = ({
   description,
   noindex = false,
 }: Props): JSX.Element => {
-  const router = useRouter()
-  const isHome = router.asPath === '/' ? true : false
   const variants = {
     hidden: {opacity: 0, x: 0, y: 0},
     enter: {opacity: 1, x: 0, y: 0},
@@ -46,10 +37,7 @@ export const Layout = ({
         openGraph={{title, description}}
         noindex={noindex}
       />
-      <LogoContainer>
-        <Logo as={isHome ? `h1` : `p`} />
-      </LogoContainer>
-      <Navbar />
+      <Header />
       <motion.main
         initial="hidden"
         animate="enter"

@@ -9,7 +9,7 @@ interface Props {
   mb?: number
 }
 
-const PriceStyled = styled(Text, {
+const Container = styled(Text, {
   size: `md`,
   ...tw`text-gray-600`,
   ...tw`border-b-2 border-gray-600`,
@@ -17,8 +17,8 @@ const PriceStyled = styled(Text, {
 })
 
 const Price: FC<Props> = ({price, mb = 0}) => (
-  <PriceStyled as="span" mb={mb}>
+  <Container as="span" mb={mb}>
     {formatPrice(price)}
-  </PriceStyled>
+  </Container>
 )
 export default Price

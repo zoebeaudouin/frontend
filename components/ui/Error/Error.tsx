@@ -13,7 +13,7 @@ interface Props {
 }
 
 const Code = styled(Container, {
-  ...tw`bg-black p-5 text-green-400 font-bold`,
+  ...tw`bg-black p-5 text-green-400 font-bold mt-6`,
 })
 export const Error: FC<Props> = ({
   title = 'Oooops !',
@@ -25,7 +25,7 @@ export const Error: FC<Props> = ({
     <Title>{title}</Title>
     <Text mt={5} mb={5}>
       {message}
-      {code && <>Please contact me with the error code below.</>}
+      {code && <>{` `}Please contact me with the error code below.</>}
     </Text>
     <Link href={'/'} passHref>
       <Button primary>Go back home</Button>

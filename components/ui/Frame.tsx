@@ -9,7 +9,7 @@ const FrameWrapper = styled(Container, {
 const FrameContent = styled(Container, {
   ...tw`border-black border-2`,
   ...tw`m-auto`,
-  ...tw`p-24`,
+  ...tw`p-24 m-4`,
   ...tw`text-center`,
 })
 

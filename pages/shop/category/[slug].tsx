@@ -65,9 +65,7 @@ const Category: NextPage = ({
 
   return (
     <Layout title={category.title}>
-      <Title as="h1" mb={4}>
-        {category.title}
-      </Title>
+      <Title as="h1">{category.title}</Title>
       <ProductGrid>
         {productsFiltered.map((product) => (
           <ProductCard key={product.slug.current} product={product} />
@@ -82,10 +80,7 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
   // used on this page.
   if (params?.slug === undefined) return <Error />
   const {slug} = params
-  const {error} = await client
-    ?.query(PRODUCTS_BY_CATEGORY_QUERY, {slug})
-    .toPromise()
-  error && console.log(error, params)
+  await client?.query(PRODUCTS_BY_CATEGORY_QUERY, {slug}).toPromise()
 
   return {
     props: {
