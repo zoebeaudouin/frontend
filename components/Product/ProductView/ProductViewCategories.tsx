@@ -13,7 +13,7 @@ const StyledLink = styled.a({
   ...tw`text-black font-medium`,
 })
 
-const Container = styled(Text, {
+const Container = styled.h3({
   size: `base`,
   ...tw`mb-3`,
   ...tw`text-gray-600`,

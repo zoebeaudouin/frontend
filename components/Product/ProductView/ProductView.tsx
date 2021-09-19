@@ -17,9 +17,9 @@ import {
   Title,
 } from '@components/ui'
 import {getProductUrl, isProductInStock} from '@lib/product'
-import type {Product} from '@types'
+import type {Product, SelectedOptions} from '@types'
 import Image from 'next/image'
-import {FC} from 'react'
+import {FC, useState} from 'react'
 import tw, {styled} from 'twin.macro'
 import {gql} from 'urql'
 
@@ -50,7 +50,7 @@ const ProductViewContainer = styled.div({
 const ProductViewImageContainer = styled.div({width: '100%'})
 
 const ProductViewThumbnails = styled.div({
-  ...tw`grid grid-cols-3 my-3`,
+  ...tw`grid grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 my-3 gap-3`,
 })
 
 const ProductViewDetails = styled.div({
@@ -76,7 +76,7 @@ export const ProductView: FC<Props> = ({product}) => {
 
   const inStock = isProductInStock(stock)
   const mainImageUrl = images[0]?.asset.url
-
+  const [selectedOptions, setSelectedOptions] = useState<SelectedOptions>({})
   return (
     <ProductViewContainer>
       <ProductViewImageContainer>
@@ -92,7 +92,7 @@ export const ProductView: FC<Props> = ({product}) => {
         {images.length > 1 && (
           <ProductViewThumbnails>
             {images
-              .filter((image) => image.asset.url !== mainImageUrl)
+              //.filter((image) => image.asset.url !== mainImageUrl)
               .map((image) => (
                 <Image
                   key={image.asset.url}
@@ -110,7 +110,7 @@ export const ProductView: FC<Props> = ({product}) => {
         <Title as="h1" size="lg" mb={3}>
           {title}
         </Title>
-        <Text mb={3} size="md">
+        <Text as="h2" mb={3} size="md">
           {blurb}
         </Text>
         {categories && <Categories categories={categories} />}
@@ -138,7 +138,11 @@ export const ProductView: FC<Props> = ({product}) => {
         </Container>
         {options && (
           <Container mb={8}>
-            <ProductOptions options={options} />
+            <ProductOptions
+              product={product}
+              selectedOptions={selectedOptions}
+              setSelectedOptions={setSelectedOptions}
+            />
           </Container>
         )}
 

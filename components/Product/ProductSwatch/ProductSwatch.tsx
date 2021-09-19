@@ -1,4 +1,3 @@
-import {Container} from '@components/ui'
 import type {IProductOptionValue} from '@types'
 import {FC} from 'react'
 import tw, {styled} from 'twin.macro'
@@ -23,18 +22,22 @@ interface Props {
   active?: boolean
   children?: React.ReactChildren
   value: IProductOptionValue
+  onClick: React.MouseEvent<HTMLElement>
 }
 export const ProductSwatch: FC<Props> = ({
   active,
   value: {hexColor, label},
+  ...props
 }) => {
-  const rounded = hexColor ? true : false
+  const isRounded = hexColor ? true : false
   return (
     <Swatch
-      rounded={rounded}
+      rounded={isRounded}
       style={hexColor && {backgroundColor: hexColor, borderColor: hexColor}}
+      {...props}
     >
       {!hexColor && label}
+      {active && 'X'}
     </Swatch>
   )
 }

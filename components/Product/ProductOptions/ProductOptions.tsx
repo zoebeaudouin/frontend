@@ -1,7 +1,7 @@
 import {ProductSwatch} from '@components/Product'
 import {Container, Title} from '@components/ui'
-import type {IProductOption} from '@types'
-import {FC} from 'react'
+import type {IProductOption, Product, SelectedOptions} from '@types'
+import {Dispatch, FC, SetStateAction, useEffect, useState} from 'react'
 import tw, {styled} from 'twin.macro'
 import {gql} from 'urql'
 
@@ -27,24 +27,72 @@ const ValuesContainer = styled(Container, {
   ...tw`flex flex-row`,
 })
 
+const OptionTitle = styled(Title, {
+  ...tw`uppercase tracking-wide `,
+})
+
 interface Props {
-  options: IProductOption[]
+  product: Product
+  selectedOptions: SelectedOptions
+  setSelectedOptions: Dispatch<SetStateAction<SelectedOptions>>
+  //options: IProductOption[]
 }
-export const ProductOptions: FC<Props> = ({options}) => {
+export const ProductOptions: FC<Props> = ({
+  product,
+  selectedOptions,
+  setSelectedOptions,
+}) => {
+  useEffect(() => {
+    selectDefaultOptionFromProduct(product, setSelectedOptions)
+  }, [product])
+
   return (
     <>
-      {options.map((option) => (
-        <OptionContainer key={option.name}>
-          <Title as="h3" size="xs">
-            {option.name}
-          </Title>
-          <ValuesContainer>
-            {option.values.map((value) => (
-              <ProductSwatch key={value.label} value={value} />
-            ))}
-          </ValuesContainer>
-        </OptionContainer>
-      ))}
+      {product?.options?.map((option) => {
+        return (
+          <OptionContainer key={option.name}>
+            <OptionTitle as="h4" size="xs">
+              {option.name}
+            </OptionTitle>
+            <ValuesContainer>
+              {option.values.map((value) => {
+                const isActive =
+                  selectedOptions[option.name.toLowerCase()] ===
+                  value.label.toLowerCase()
+                return (
+                  <ProductSwatch
+                    key={value.label}
+                    value={value}
+                    active={isActive}
+                    onClick={() => {
+                      setSelectedOptions((selectedOptions) => {
+                        return {
+                          ...selectedOptions,
+                          [option.name.toLowerCase()]:
+                            value.label.toLowerCase(),
+                        }
+                      })
+                    }}
+                  />
+                )
+              })}
+            </ValuesContainer>
+          </OptionContainer>
+        )
+      })}
     </>
   )
+}
+
+function selectDefaultOptionFromProduct(
+  product: Product,
+  updater: Dispatch<SetStateAction<SelectedOptions>>
+) {
+  // Selects the default option
+  product?.options?.forEach((value) => {
+    updater((choices) => ({
+      ...choices,
+      [value.name.toLowerCase()]: value.values[0].label.toLowerCase(),
+    }))
+  })
 }

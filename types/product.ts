@@ -40,3 +40,5 @@ export interface IProductOption {
   name: string
   values: IProductOptionValue[]
 }
+
+export type SelectedOptions = Record<string, string | null>
