@@ -3,7 +3,7 @@ import tw, {styled} from 'twin.macro'
 import Link from 'next/link'
 
 const NavbarContainer = styled.nav({
-  ...tw`hidden sm:flex sticky top-0 bg-black mb-4 sm:px-8 2xl:px-48 text-white z-50 items-center h-12 justify-between md:justify-start md:space-x-12`,
+  ...tw`hidden sm:flex sticky top-0 bg-black mb-4 sm:px-8 2xl:px-48 text-white z-10 items-center h-12 justify-between md:justify-start md:space-x-12`,
 
   fontFamily: '$mono',
   a: {

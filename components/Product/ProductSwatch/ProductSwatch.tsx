@@ -6,16 +6,33 @@ const Swatch = styled.button({
   ...tw`font-bold text-black`,
   ...tw`mr-2`,
   variants: {
-    rounded: {
-      true: {...tw`inline-block w-10 h-10 rounded-full`},
-      false: {
+    shape: {
+      circle: {
+        ...tw`inline-block w-10 h-10 rounded-full`,
+      },
+      square: {
         ...tw`border-2 p-2 border-black`,
         '&:hover': {
           ...tw`bg-black text-white transition duration-500 ease-in-out`,
         },
       },
     },
+    active: {
+      true: {},
+    },
   },
+  defaultVariants: {
+    shape: 'square',
+  },
+  compoundVariants: [
+    {
+      shape: 'square',
+      active: true,
+      css: {
+        ...tw`bg-black text-white`,
+      },
+    },
+  ],
 })
 
 interface Props {
@@ -29,15 +46,15 @@ export const ProductSwatch: FC<Props> = ({
   value: {hexColor, label},
   ...props
 }) => {
-  const isRounded = hexColor ? true : false
   return (
     <Swatch
-      rounded={isRounded}
-      style={hexColor && {backgroundColor: hexColor, borderColor: hexColor}}
+      shape={hexColor ? 'circle' : 'square'}
+      active={active}
+      css={hexColor && {backgroundColor: hexColor, borderColor: hexColor}}
       {...props}
     >
       {!hexColor && label}
-      {active && 'X'}
+      {active && hexColor && 'X'}
     </Swatch>
   )
 }

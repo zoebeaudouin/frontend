@@ -51,7 +51,9 @@ const Tag: NextPage = ({
 
   return (
     <Layout title={`#${tag}`} noindex>
-      <Title as="h1">#{tag}</Title>
+      <Title as="h1" mb={5}>
+        #{tag}
+      </Title>
       <ProductGrid>
         {productsFiltered.map((product) => (
           <ProductCard key={product.slug.current} product={product} />
